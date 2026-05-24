@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Disclaimer"
+  description="CapitalColumn financial disclaimer — important information about AI-assisted content and investment risk."
+>
+  <div class="container">
+    <article class="static-page">
+      <h1>Disclaimer</h1>
+
+      <section class="static-section">
+        <h2>General Disclaimer</h2>
+        <p>
+          The information provided on CapitalColumn ("the Site") is for general informational and
+          educational purposes only. All content on this Site — including articles, analysis, data,
+          and commentary — is published in good faith and is not intended as financial advice,
+          investment advice, trading advice, or any other form of professional advice.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>AI-Assisted Content</h2>
+        <p>
+          A significant portion of content published on CapitalColumn is generated or drafted with
+          the assistance of artificial intelligence systems. While we strive for accuracy and employ
+          both automated and human review processes, AI-generated content may contain errors,
+          inaccuracies, or outdated information.
+        </p>
+        <p>
+          Articles clearly indicate their production and review status through provenance badges.
+          Readers should exercise independent judgment and verify information through primary sources
+          before making any decisions based on our content.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>No Financial Advice</h2>
+        <p>
+          Nothing on this Site constitutes a recommendation to buy, sell, or hold any financial
+          instrument. Investment decisions should be based on your own research and consultation
+          with a qualified financial advisor who understands your personal financial situation,
+          risk tolerance, and investment objectives.
+        </p>
+        <p>
+          Past performance of securities, markets, or financial products discussed on this Site is
+          not indicative of future results. All investments involve risk, including the potential
+          loss of the entire invested amount.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>Accuracy & Timeliness</h2>
+        <p>
+          While we make every effort to ensure the information on this Site is accurate and up to
+          date, we make no representations or warranties — express or implied — about the
+          completeness, accuracy, reliability, suitability, or availability of the information
+          contained on the Site.
+        </p>
+        <p>
+          Market conditions change rapidly. Information that was accurate at the time of publication
+          may no longer be current. Always refer to the published and updated timestamps on each
+          article.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>Limitation of Liability</h2>
+        <p>
+          In no event shall CapitalColumn, its operators, contributors, or affiliates be liable for
+          any direct, indirect, incidental, consequential, or punitive damages arising from your
+          use of, or inability to use, the Site or its content.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>Third-Party Links & Sources</h2>
+        <p>
+          Articles on CapitalColumn may contain links to external websites and sources. These links
+          are provided for reference and verification purposes. We do not endorse or assume
+          responsibility for the content, privacy policies, or practices of any third-party websites.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>Contact</h2>
+        <p>
+          If you have questions about this disclaimer, please contact us at
+          <a href="mailto:hello@capitalcolumn.in">hello@capitalcolumn.in</a>.
+        </p>
+      </section>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .static-page {
+    max-width: var(--max-w-content);
+    margin: 0 auto;
+    padding: var(--space-8) 0 var(--space-16);
+  }
+  .static-page h1 {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-8);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .static-section {
+    margin-bottom: var(--space-10);
+  }
+  .static-section h2 {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-4);
+  }
+  .static-section p {
+    font-size: var(--text-base);
+    line-height: var(--leading-loose);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-4);
+  }
+  .static-section a {
+    color: var(--color-accent);
+  }
+</style>

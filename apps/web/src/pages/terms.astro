@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Terms of Service"
+  description="CapitalColumn terms of service governing use of our website and content."
+>
+  <div class="container">
+    <article class="static-page">
+      <h1>Terms of Service</h1>
+      <p class="static-page__updated">Last updated: May 2026</p>
+
+      <section class="static-section">
+        <h2>Acceptance of Terms</h2>
+        <p>
+          By accessing or using CapitalColumn ("the Site"), you agree to be bound by these Terms of
+          Service. If you do not agree to these terms, please do not use the Site.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>Use of Content</h2>
+        <p>
+          All content on the Site — including articles, analysis, data, graphics, and design — is
+          the property of CapitalColumn and is protected by copyright laws. You may:
+        </p>
+        <ul>
+          <li>Read and share articles via links for personal, non-commercial use.</li>
+          <li>Quote short excerpts with proper attribution and a link to the original article.</li>
+        </ul>
+        <p>You may not:</p>
+        <ul>
+          <li>Reproduce, republish, or redistribute full articles without written permission.</li>
+          <li>Use our content to train AI models without explicit authorization.</li>
+          <li>Scrape or bulk-download content from the Site.</li>
+        </ul>
+      </section>
+
+      <section class="static-section">
+        <h2>No Financial Advice</h2>
+        <p>
+          Content on CapitalColumn is for informational purposes only and does not constitute financial,
+          investment, legal, or tax advice. Please refer to our <a href="/disclaimer">Disclaimer</a>
+          for full details.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>User Conduct</h2>
+        <p>
+          You agree not to use the Site for any unlawful purpose, and not to interfere with or
+          disrupt the Site's infrastructure, security features, or other users' experience.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>Limitation of Liability</h2>
+        <p>
+          CapitalColumn shall not be liable for any damages arising from your use of the Site,
+          including but not limited to direct, indirect, incidental, or consequential damages.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>Modifications</h2>
+        <p>
+          We reserve the right to modify these Terms at any time. Continued use of the Site after
+          changes constitutes acceptance of the new Terms.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>Contact</h2>
+        <p>
+          For questions about these Terms: <a href="mailto:hello@capitalcolumn.in">hello@capitalcolumn.in</a>
+        </p>
+      </section>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .static-page {
+    max-width: var(--max-w-content);
+    margin: 0 auto;
+    padding: var(--space-8) 0 var(--space-16);
+  }
+  .static-page h1 { font-size: var(--text-4xl); margin-bottom: var(--space-2); }
+  .static-page__updated {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-8);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .static-section { margin-bottom: var(--space-10); }
+  .static-section h2 { font-size: var(--text-2xl); margin-bottom: var(--space-4); }
+  .static-section p, .static-section li { font-size: var(--text-base); line-height: var(--leading-loose); color: var(--color-text-secondary); }
+  .static-section p { margin-bottom: var(--space-4); }
+  .static-section ul { padding-left: var(--space-6); margin-bottom: var(--space-4); }
+  .static-section li { margin-bottom: var(--space-2); }
+  .static-section a { color: var(--color-accent); }
+</style>

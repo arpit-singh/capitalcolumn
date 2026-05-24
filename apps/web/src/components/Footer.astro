@@ -1,0 +1,84 @@
+---
+const categories = [
+  { label: 'Markets', href: '/category/markets' },
+  { label: 'Earnings', href: '/category/earnings' },
+  { label: 'Companies', href: '/category/companies' },
+  { label: 'Technology', href: '/category/technology' },
+  { label: 'Banking', href: '/category/banking' },
+  { label: 'IPOs', href: '/category/ipos' },
+];
+
+const resources = [
+  { label: 'About', href: '/about' },
+  { label: 'Editorial Policy', href: '/editorial-policy' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const legal = [
+  { label: 'Privacy Policy', href: '/privacy' },
+  { label: 'Terms of Service', href: '/terms' },
+  { label: 'Disclaimer', href: '/disclaimer' },
+];
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner container">
+    <div class="footer-grid">
+      <div class="footer-col footer-col-about">
+        <a href="/" class="footer-logo" aria-label="CapitalColumn home">
+          <span class="footer-logo-text">Capital<span class="footer-logo-accent">Column</span></span>
+        </a>
+        <p class="footer-tagline">
+          AI-powered financial intelligence, grounded in primary sources and editorial integrity.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-col-heading">Categories</h3>
+        <ul class="footer-link-list" role="list">
+          {categories.map((item) => (
+            <li>
+              <a href={item.href} class="footer-link">{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-col-heading">Resources</h3>
+        <ul class="footer-link-list" role="list">
+          {resources.map((item) => (
+            <li>
+              <a href={item.href} class="footer-link">{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3 class="footer-col-heading">Legal</h3>
+        <ul class="footer-link-list" role="list">
+          {legal.map((item) => (
+            <li>
+              <a href={item.href} class="footer-link">{item.label}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner container">
+      <p class="footer-copyright">
+        &copy; {currentYear} CapitalColumn. All rights reserved.
+      </p>
+      <p class="footer-ai-label">
+        <span class="footer-ai-dot" aria-hidden="true"></span>
+        AI-Assisted Financial News
+      </p>
+    </div>
+  </div>
+</footer>

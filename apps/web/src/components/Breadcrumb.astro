@@ -1,0 +1,47 @@
+---
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+
+// Build the schema.org BreadcrumbList structured data
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  'itemListElement': items.map((item, index) => ({
+    '@type': 'ListItem',
+    'position': index + 1,
+    'name': item.label,
+    ...(item.href ? { 'item': `https://capitalcolumn.in${item.href}` } : {}),
+  })),
+};
+---
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <ol class="breadcrumb-list" role="list">
+    {items.map((item, index) => (
+      <li class="breadcrumb-item">
+        {index > 0 && (
+          <span class="breadcrumb-separator" aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </span>
+        )}
+        {item.href ? (
+          <a href={item.href} class="breadcrumb-link">{item.label}</a>
+        ) : (
+          <span class="breadcrumb-current" aria-current="page">{item.label}</span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />

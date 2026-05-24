@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Privacy Policy"
+  description="CapitalColumn privacy policy — how we collect, use, and protect your data."
+>
+  <div class="container">
+    <article class="static-page">
+      <h1>Privacy Policy</h1>
+      <p class="static-page__updated">Last updated: May 2026</p>
+
+      <section class="static-section">
+        <h2>Information We Collect</h2>
+        <p>
+          When you visit CapitalColumn, we may collect the following information:
+        </p>
+        <ul>
+          <li><strong>Usage Data:</strong> Pages visited, time spent, referral source, and browser type via analytics tools.</li>
+          <li><strong>Contact Information:</strong> If you contact us or subscribe to our newsletter, we collect your email address and any information you provide.</li>
+          <li><strong>Cookies:</strong> We use cookies for analytics and site functionality. You can disable cookies in your browser settings.</li>
+        </ul>
+      </section>
+
+      <section class="static-section">
+        <h2>How We Use Your Information</h2>
+        <ul>
+          <li>To operate and improve our website.</li>
+          <li>To send you newsletters or updates if you opt in.</li>
+          <li>To respond to your inquiries.</li>
+          <li>To understand how our content is consumed and improve our editorial coverage.</li>
+        </ul>
+      </section>
+
+      <section class="static-section">
+        <h2>Data Sharing</h2>
+        <p>
+          We do not sell, rent, or trade your personal information. We may share anonymized, aggregated
+          data with analytics providers (such as Cloudflare Analytics) to improve our service.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>Data Security</h2>
+        <p>
+          We implement reasonable security measures to protect your information. However, no method
+          of transmission over the internet is 100% secure.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>Your Rights</h2>
+        <p>
+          You may request access to, correction of, or deletion of your personal data by emailing
+          <a href="mailto:hello@capitalcolumn.in">hello@capitalcolumn.in</a>.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>Changes to This Policy</h2>
+        <p>
+          We may update this privacy policy from time to time. Changes will be posted on this page
+          with an updated revision date.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>Contact</h2>
+        <p>
+          For privacy-related inquiries: <a href="mailto:hello@capitalcolumn.in">hello@capitalcolumn.in</a>
+        </p>
+      </section>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .static-page {
+    max-width: var(--max-w-content);
+    margin: 0 auto;
+    padding: var(--space-8) 0 var(--space-16);
+  }
+  .static-page h1 {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-2);
+  }
+  .static-page__updated {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-8);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .static-section { margin-bottom: var(--space-10); }
+  .static-section h2 { font-size: var(--text-2xl); margin-bottom: var(--space-4); }
+  .static-section p, .static-section li { font-size: var(--text-base); line-height: var(--leading-loose); color: var(--color-text-secondary); }
+  .static-section p { margin-bottom: var(--space-4); }
+  .static-section ul { padding-left: var(--space-6); margin-bottom: var(--space-4); }
+  .static-section li { margin-bottom: var(--space-2); }
+  .static-section a { color: var(--color-accent); }
+</style>

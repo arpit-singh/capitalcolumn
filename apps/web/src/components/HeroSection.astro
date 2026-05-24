@@ -1,0 +1,115 @@
+---
+import type { Article } from '../lib/types';
+import ProvenanceBadge from './ProvenanceBadge.astro';
+
+interface Props {
+  articles: Article[];
+}
+
+const { articles } = Astro.props;
+
+const leadStory = articles[0];
+const secondaryStories = articles.slice(1, 5);
+
+function formatTimeAgo(dateStr: string): string {
+  const now = new Date();
+  const date = new Date(dateStr);
+  const diff = now.getTime() - date.getTime();
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor(diff / (1000 * 60));
+
+  if (minutes < 60) return `${minutes}m ago`;
+  if (hours < 24) return `${hours}h ago`;
+  if (hours < 48) return 'Yesterday';
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function getProvenanceType(article: Article): 'ai_assisted' | 'editor_reviewed' | 'source_verified' | 'updated' | 'corrected' {
+  if (article.correction_note) return 'corrected';
+  if (article.is_editor_reviewed) return 'editor_reviewed';
+  if (article.fact_check_status === 'source_verified') return 'source_verified';
+  return 'ai_assisted';
+}
+---
+
+<section class="hero-section" aria-label="Top stories">
+  <div class="hero-inner container">
+    {leadStory && (
+      <div class="hero-lead">
+        {leadStory.featured_image && (
+          <a href={`/news/${leadStory.slug}`} class="hero-lead-image-link" tabindex="-1" aria-hidden="true">
+            <div class="hero-lead-image-wrap">
+              <img
+                src={leadStory.featured_image.public_url}
+                alt={leadStory.featured_image.alt_text || leadStory.title}
+                class="hero-lead-image"
+                loading="eager"
+                decoding="async"
+                width="800"
+                height="450"
+              />
+            </div>
+          </a>
+        )}
+        <div class="hero-lead-content">
+          <a href={`/category/${leadStory.category.slug}`} class="hero-lead-category">
+            {leadStory.category.name}
+          </a>
+          <h2 class="hero-lead-title">
+            <a href={`/news/${leadStory.slug}`} class="hero-lead-title-link">
+              {leadStory.title}
+            </a>
+          </h2>
+          {leadStory.dek && (
+            <p class="hero-lead-dek">{leadStory.dek}</p>
+          )}
+          <div class="hero-lead-meta">
+            <time datetime={leadStory.published_at} class="hero-lead-time">
+              {formatTimeAgo(leadStory.published_at)}
+            </time>
+            <span class="hero-lead-reading-time">{leadStory.reading_time_minutes} min read</span>
+            <ProvenanceBadge type={getProvenanceType(leadStory)} />
+          </div>
+        </div>
+      </div>
+    )}
+
+    <div class="hero-secondary" role="list">
+      {secondaryStories.map((article, i) => (
+        <article class="hero-secondary-item" role="listitem">
+          <a href={`/category/${article.category.slug}`} class="hero-secondary-category">
+            {article.category.name}
+          </a>
+          <h3 class="hero-secondary-title">
+            <a href={`/news/${article.slug}`} class="hero-secondary-title-link">
+              {article.title}
+            </a>
+          </h3>
+          <div class="hero-secondary-meta">
+            <time datetime={article.published_at} class="hero-secondary-time">
+              {formatTimeAgo(article.published_at)}
+            </time>
+            <span class="hero-secondary-reading-time">{article.reading_time_minutes} min</span>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-lead-reading-time {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+  .hero-secondary-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+  .hero-secondary-reading-time {
+    color: var(--color-text-muted);
+  }
+</style>

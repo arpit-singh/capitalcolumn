@@ -1,0 +1,264 @@
+---
+const primaryNavItems = [
+  { label: 'Markets', href: '/category/markets' },
+  { label: 'Earnings', href: '/category/earnings' },
+  { label: 'Companies', href: '/category/companies' },
+  { label: 'Technology', href: '/category/technology' },
+  { label: 'Banking', href: '/category/banking' },
+];
+
+const moreNavItems = [
+  { label: 'IPOs', href: '/category/ipos' },
+  { label: 'About', href: '/about' },
+  { label: 'Editorial Policy', href: '/editorial-policy' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const allNavItems = [...primaryNavItems, ...moreNavItems];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="header" id="site-header">
+  <div class="header-inner container">
+    <a href="/" class="header-logo" aria-label="CapitalColumn home">
+      <span class="header-logo-text">Capital<span class="header-logo-accent">Column</span></span>
+    </a>
+
+    <nav class="header-nav" aria-label="Primary navigation">
+      <ul class="header-nav-list" role="list">
+        {primaryNavItems.map((item) => (
+          <li class="header-nav-item">
+            <a
+              href={item.href}
+              class:list={['header-nav-link', { 'is-active': currentPath.startsWith(item.href) }]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+        <li class="header-nav-item header-nav-more">
+          <button
+            class="header-nav-link header-more-btn"
+            id="more-btn"
+            aria-expanded="false"
+            aria-haspopup="true"
+            aria-controls="more-dropdown"
+            type="button"
+          >
+            More
+            <svg class="header-more-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <!-- Dropdown menu -->
+          <div class="header-dropdown" id="more-dropdown" role="menu" aria-hidden="true">
+            {moreNavItems.map((item) => (
+              <a
+                href={item.href}
+                class:list={['header-dropdown-link', { 'is-active': currentPath.startsWith(item.href) }]}
+                role="menuitem"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <button class="header-action-btn" aria-label="Search articles" type="button" id="search-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      </button>
+
+      <button class="header-action-btn header-theme-toggle" aria-label="Toggle dark mode" type="button">
+        <svg class="header-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="header-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+
+      <button class="header-hamburger" id="hamburger-btn" aria-label="Open menu" aria-expanded="false" type="button">
+        <span class="header-hamburger-line"></span>
+        <span class="header-hamburger-line"></span>
+        <span class="header-hamburger-line"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation Drawer -->
+  <div class="header-mobile-drawer" id="mobile-drawer" aria-hidden="true">
+    <nav class="header-mobile-nav" aria-label="Mobile navigation">
+      <ul class="header-mobile-list" role="list">
+        {allNavItems.map((item) => (
+          <li class="header-mobile-item">
+            <a
+              href={item.href}
+              class:list={['header-mobile-link', { 'is-active': currentPath.startsWith(item.href) }]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="header-mobile-footer">
+        <a href="/search" class="header-mobile-secondary-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          Search
+        </a>
+        <button class="header-mobile-theme-btn" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <span class="mobile-theme-label">Dark Mode</span>
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Sticky header scroll detection
+  const header = document.getElementById('site-header');
+  if (header) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        header.classList.add('header-scrolled');
+      } else {
+        header.classList.remove('header-scrolled');
+      }
+    }, { passive: true });
+  }
+
+  // "More" dropdown
+  const moreBtn = document.getElementById('more-btn');
+  const moreDropdown = document.getElementById('more-dropdown');
+  if (moreBtn && moreDropdown) {
+    moreBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = moreDropdown.classList.toggle('is-open');
+      moreBtn.classList.toggle('is-open', isOpen);
+      moreBtn.setAttribute('aria-expanded', String(isOpen));
+      moreDropdown.setAttribute('aria-hidden', String(!isOpen));
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!moreBtn.contains(e.target as Node) && !moreDropdown.contains(e.target as Node)) {
+        moreDropdown.classList.remove('is-open');
+        moreBtn.classList.remove('is-open');
+        moreBtn.setAttribute('aria-expanded', 'false');
+        moreDropdown.setAttribute('aria-hidden', 'true');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && moreDropdown.classList.contains('is-open')) {
+        moreDropdown.classList.remove('is-open');
+        moreBtn.classList.remove('is-open');
+        moreBtn.setAttribute('aria-expanded', 'false');
+        moreDropdown.setAttribute('aria-hidden', 'true');
+        moreBtn.focus();
+      }
+    });
+  }
+
+  // Mobile drawer toggle
+  const hamburger = document.getElementById('hamburger-btn');
+  const drawer = document.getElementById('mobile-drawer');
+  if (hamburger && drawer) {
+    hamburger.addEventListener('click', () => {
+      const isOpen = drawer.classList.toggle('is-open');
+      hamburger.classList.toggle('is-open', isOpen);
+      hamburger.setAttribute('aria-expanded', String(isOpen));
+      hamburger.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+      drawer.setAttribute('aria-hidden', String(!isOpen));
+      document.body.classList.toggle('no-scroll', isOpen);
+    });
+
+    drawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        drawer.classList.remove('is-open');
+        hamburger.classList.remove('is-open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        hamburger.setAttribute('aria-label', 'Open menu');
+        drawer.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('no-scroll');
+      });
+    });
+
+    // Mobile theme toggle
+    const mobileThemeBtn = drawer.querySelector('.header-mobile-theme-btn');
+    if (mobileThemeBtn) {
+      mobileThemeBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const newDark = !isDark;
+        applyTheme(newDark);
+        localStorage.setItem('theme', newDark ? 'dark' : 'light');
+      });
+    }
+  }
+
+  // Search button
+  const searchBtn = document.getElementById('search-btn');
+  if (searchBtn) {
+    searchBtn.addEventListener('click', () => {
+      window.location.href = '/search';
+    });
+  }
+
+  // Dark mode toggle — uses data-theme attribute on <html>
+  const themeToggle = document.querySelector('.header-theme-toggle') as HTMLButtonElement | null;
+  const moonIcon = document.querySelector('.header-icon-moon') as SVGElement | null;
+  const sunIcon = document.querySelector('.header-icon-sun') as SVGElement | null;
+
+  function applyTheme(dark: boolean) {
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    if (moonIcon && sunIcon) {
+      moonIcon.style.display = dark ? 'none' : 'block';
+      sunIcon.style.display = dark ? 'block' : 'none';
+    }
+    if (themeToggle) {
+      themeToggle.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+    // Update mobile theme label
+    const mobileLabel = document.querySelector('.mobile-theme-label');
+    if (mobileLabel) mobileLabel.textContent = dark ? 'Light Mode' : 'Dark Mode';
+  }
+
+  // Initialize theme from localStorage or system preference
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    applyTheme(true);
+  } else if (savedTheme === 'light') {
+    applyTheme(false);
+  } else {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(prefersDark);
+  }
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const newDark = !isDark;
+      applyTheme(newDark);
+      localStorage.setItem('theme', newDark ? 'dark' : 'light');
+    });
+  }
+</script>

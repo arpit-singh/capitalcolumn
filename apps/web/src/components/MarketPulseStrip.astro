@@ -1,0 +1,25 @@
+---
+const topics = [
+  { label: 'Earnings Season', href: '/topic/earnings-season' },
+  { label: 'Fed Policy Watch', href: '/topic/fed-policy' },
+  { label: 'Tech Rally', href: '/topic/tech-rally' },
+  { label: 'Banking Outlook', href: '/topic/banking-outlook' },
+  { label: 'Oil & Energy', href: '/topic/oil-energy' },
+  { label: 'IPO Pipeline', href: '/topic/ipo-pipeline' },
+];
+---
+
+<div class="market-pulse-strip" role="navigation" aria-label="Market themes">
+  <div class="market-pulse-inner container">
+    <ul class="market-pulse-list" role="list">
+      {topics.map((topic) => (
+        <li class="market-pulse-item">
+          <a href={topic.href} class="market-pulse-link">
+            <span class="market-pulse-dot" aria-hidden="true"></span>
+            {topic.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>

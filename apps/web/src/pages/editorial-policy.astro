@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Editorial Policy"
+  description="CapitalColumn's editorial policy covering AI-assisted content, source standards, corrections, and financial disclaimer."
+>
+  <div class="container">
+    <article class="static-page">
+      <h1>Editorial Policy</h1>
+
+      <section class="static-section">
+        <h2>AI-Assisted Content Policy</h2>
+        <p>
+          CapitalColumn uses artificial intelligence to assist in researching, drafting, and structuring
+          financial news articles. Our AI pipeline scans regulatory filings, press releases, exchange
+          data, and trusted news sources to produce article drafts.
+        </p>
+        <p>
+          Every article published on CapitalColumn clearly indicates its production status through
+          provenance badges:
+        </p>
+        <ul>
+          <li><strong>AI-Assisted:</strong> The article was generated with AI assistance and may not have been reviewed by a human editor.</li>
+          <li><strong>Editor Reviewed:</strong> A human editor has reviewed the article for accuracy, context, and editorial quality.</li>
+          <li><strong>Source Verified:</strong> All primary claims in the article have been traced back to and verified against original sources.</li>
+        </ul>
+        <p>
+          We are committed to being transparent about AI usage. We will never publish AI-generated
+          content while pretending it was written by a human journalist.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>Source Standards</h2>
+        <p>
+          We prioritize primary sources: company filings, regulatory disclosures, official press
+          releases, and verified market data. When secondary sources are used, they are clearly
+          attributed.
+        </p>
+        <p>
+          Every article includes source cards at the bottom, listing:
+        </p>
+        <ul>
+          <li>Source name and publisher</li>
+          <li>Source type (filing, press release, news article, etc.)</li>
+          <li>Whether it is a primary source</li>
+          <li>A link to the original document or page</li>
+        </ul>
+      </section>
+
+      <section class="static-section">
+        <h2>Correction Process</h2>
+        <p>
+          We take accuracy seriously. When an error is identified — whether by our team, our readers,
+          or our automated checks — we follow this process:
+        </p>
+        <ol>
+          <li>The article is updated with the correct information.</li>
+          <li>A correction notice is added to the article, clearly describing what was changed and why.</li>
+          <li>The correction timestamp is displayed on the article.</li>
+          <li>The correction is logged in our audit system.</li>
+        </ol>
+        <p>
+          To report an error or request a correction, please contact us at
+          <a href="mailto:corrections@capitalcolumn.in">corrections@capitalcolumn.in</a>.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>Financial Disclaimer</h2>
+        <p>
+          CapitalColumn publishes financial news and analysis for informational purposes only. Nothing
+          on this website constitutes financial advice, investment advice, trading advice, or any
+          other type of advice.
+        </p>
+        <p>
+          You should not make any financial decision based solely on information published on
+          CapitalColumn. Always consult a qualified, licensed financial advisor before making
+          investment decisions.
+        </p>
+        <p>
+          Past performance of any security, market sector, or financial product is not indicative of
+          future results. All investments involve risk, including the potential loss of principal.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>Conflict of Interest Statement</h2>
+        <p>
+          CapitalColumn and its team members may hold positions in securities mentioned in articles.
+          Any material conflict of interest will be disclosed in the relevant article.
+        </p>
+        <p>
+          Our editorial coverage is not influenced by advertising revenue, corporate partnerships, or
+          external pressures. We do not accept payment for favorable coverage.
+        </p>
+      </section>
+
+      <section class="static-section">
+        <h2>Contact</h2>
+        <p>
+          For editorial inquiries: <a href="mailto:hello@capitalcolumn.in">hello@capitalcolumn.in</a>
+        </p>
+        <p>
+          For corrections: <a href="mailto:corrections@capitalcolumn.in">corrections@capitalcolumn.in</a>
+        </p>
+      </section>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .static-page {
+    max-width: var(--max-w-content);
+    margin: 0 auto;
+    padding: var(--space-8) 0 var(--space-16);
+  }
+  .static-page h1 {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-8);
+    padding-bottom: var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .static-section {
+    margin-bottom: var(--space-10);
+  }
+  .static-section h2 {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-4);
+  }
+  .static-section p,
+  .static-section li {
+    font-size: var(--text-base);
+    line-height: var(--leading-loose);
+    color: var(--color-text-secondary);
+  }
+  .static-section p {
+    margin-bottom: var(--space-4);
+  }
+  .static-section ul,
+  .static-section ol {
+    padding-left: var(--space-6);
+    margin-bottom: var(--space-4);
+  }
+  .static-section li {
+    margin-bottom: var(--space-2);
+  }
+  .static-section a {
+    color: var(--color-accent);
+  }
+</style>

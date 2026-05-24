@@ -1,0 +1,18 @@
+---
+interface Props {
+  ticker: string;
+  exchange?: string;
+}
+
+const { ticker, exchange } = Astro.props;
+const displayLabel = `$${ticker}`;
+const href = `/company/${ticker.toLowerCase()}`;
+---
+
+<a
+  href={href}
+  class="ticker-chip"
+  title={exchange ? `${ticker} on ${exchange}` : ticker}
+>
+  {displayLabel}
+</a>

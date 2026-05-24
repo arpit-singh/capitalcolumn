@@ -1,0 +1,45 @@
+---
+import type { Article } from '../lib/types';
+
+interface Props {
+  article: Article;
+  index?: number;
+}
+
+const { article, index } = Astro.props;
+
+function formatTimeAgo(dateStr: string): string {
+  const now = new Date();
+  const date = new Date(dateStr);
+  const diff = now.getTime() - date.getTime();
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  const minutes = Math.floor(diff / (1000 * 60));
+
+  if (minutes < 60) return `${minutes}m ago`;
+  if (hours < 24) return `${hours}h ago`;
+  if (hours < 48) return 'Yesterday';
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+const articleUrl = `/news/${article.slug}`;
+const displayIndex = index !== undefined ? String(index + 1).padStart(2, '0') : null;
+---
+
+<article class="article-card-compact">
+  {displayIndex && (
+    <span class="article-card-compact-index" aria-hidden="true">{displayIndex}</span>
+  )}
+  <div class="article-card-compact-body">
+    <a href={`/category/${article.category.slug}`} class="article-card-compact-category">
+      {article.category.name}
+    </a>
+    <h3 class="article-card-compact-title">
+      <a href={articleUrl} class="article-card-compact-title-link">
+        {article.title}
+      </a>
+    </h3>
+    <time datetime={article.published_at} class="article-card-compact-time">
+      {formatTimeAgo(article.published_at)}
+    </time>
+  </div>
+</article>

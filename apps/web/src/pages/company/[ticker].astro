@@ -1,0 +1,183 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import TickerChip from '../../components/TickerChip.astro';
+import {
+  getCompanies,
+  getCompanyByTicker,
+  getArticlesByTicker,
+} from '../../lib/data';
+
+export function getStaticPaths() {
+  const companies = getCompanies();
+  return companies.map((co) => ({
+    params: { ticker: co.ticker },
+    props: { company: co },
+  }));
+}
+
+const { company } = Astro.props;
+const articles = getArticlesByTicker(company.ticker);
+---
+
+<BaseLayout
+  title={`${company.name} (${company.ticker}) — Coverage`}
+  description={`Latest news, analysis, and earnings coverage for ${company.name} (${company.ticker}:${company.exchange}).`}
+>
+  <div class="container">
+    {/* Company Header */}
+    <header class="company-header">
+      <nav class="breadcrumb-simple" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">›</span>
+        <span>Companies</span>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">{company.ticker}</span>
+      </nav>
+
+      <div class="company-header__top">
+        <h1>{company.name}</h1>
+        <div class="company-header__ticker-badge">
+          <span class="ticker-symbol">{company.ticker}</span>
+          <span class="ticker-exchange">{company.exchange}</span>
+        </div>
+      </div>
+
+      <div class="company-meta">
+        <span class="company-meta__item">
+          <strong>Sector:</strong> {company.sector}
+        </span>
+        <span class="company-meta__divider" aria-hidden="true">•</span>
+        <span class="company-meta__item">
+          <strong>Industry:</strong> {company.industry}
+        </span>
+        <span class="company-meta__divider" aria-hidden="true">•</span>
+        <span class="company-meta__item">
+          <strong>Country:</strong> {company.country}
+        </span>
+      </div>
+    </header>
+
+    {/* Market Data Placeholder */}
+    <section class="market-data-placeholder">
+      <div class="placeholder-card">
+        <span class="placeholder-icon">📊</span>
+        <p><strong>Market data coming soon</strong></p>
+        <p class="placeholder-sub">Real-time quotes, charts, and key financials will be available here.</p>
+      </div>
+    </section>
+
+    {/* Latest Coverage */}
+    <section class="company-articles">
+      <h2>Latest Coverage</h2>
+      {articles.length === 0 ? (
+        <div class="empty-state">
+          <p>No coverage for {company.name} yet. Check back soon.</p>
+        </div>
+      ) : (
+        <div class="articles-list">
+          {articles.map((article) => (
+            <ArticleCard article={article} variant="horizontal" showImage={false} />
+          ))}
+        </div>
+      )}
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .company-header {
+    padding: var(--space-8) 0 var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-8);
+  }
+  .breadcrumb-simple {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    display: flex;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+  .breadcrumb-simple a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+  .breadcrumb-simple a:hover {
+    color: var(--color-accent);
+  }
+  .company-header__top {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+  .company-header__top h1 {
+    font-size: var(--text-3xl);
+    margin: 0;
+  }
+  .company-header__ticker-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--color-bg-alt);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+  }
+  .ticker-symbol {
+    font-family: var(--font-mono, var(--font-body));
+    font-weight: var(--weight-bold);
+    font-size: var(--text-lg);
+    color: var(--color-accent);
+  }
+  .ticker-exchange {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+  .company-meta {
+    margin-top: var(--space-3);
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+  .company-meta__divider {
+    color: var(--color-border-strong);
+  }
+  .market-data-placeholder {
+    margin-bottom: var(--space-8);
+  }
+  .placeholder-card {
+    text-align: center;
+    padding: var(--space-8) var(--space-6);
+    background: var(--color-bg-alt);
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-lg);
+  }
+  .placeholder-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: var(--space-2);
+  }
+  .placeholder-sub {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-top: var(--space-1);
+  }
+  .company-articles h2 {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-4);
+  }
+  .articles-list {
+    display: grid;
+    gap: var(--space-4);
+    padding-bottom: var(--space-12);
+  }
+  .empty-state {
+    text-align: center;
+    padding: var(--space-12) 0;
+    color: var(--color-text-muted);
+  }
+</style>

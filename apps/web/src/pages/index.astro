@@ -1,11 +1,135 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroSection from '../components/HeroSection.astro';
+import MarketPulseStrip from '../components/MarketPulseStrip.astro';
+import LatestNewsFeed from '../components/LatestNewsFeed.astro';
+import TopicBlock from '../components/TopicBlock.astro';
+import TrustModule from '../components/TrustModule.astro';
+import NewsletterCTA from '../components/NewsletterCTA.astro';
+import { siteConfig } from '../lib/config';
+import {
+  getArticles,
+  getArticlesByCategory,
+} from '../lib/data';
+
+const allArticles = getArticles();
+const heroArticles = allArticles.slice(0, 5);
+const latestArticles = allArticles.slice(5, 11);
+
+const marketsArticles = getArticlesByCategory('markets');
+const techArticles = getArticlesByCategory('technology');
+const earningsArticles = getArticlesByCategory('earnings');
+const bankingArticles = getArticlesByCategory('banking');
 ---
-<html>
-  <head>
-    <title>Placeholder Astro App</title>
-  </head>
-  <body>
-    <h1>Hello from Astro!</h1>
-    <p>This is a placeholder page.</p>
-  </body>
-</html>
+
+<BaseLayout
+  title="AI-Powered Financial Intelligence"
+  description={siteConfig.description}
+>
+  {/* Hero Section */}
+  <section class="homepage-section homepage-section--hero">
+    <div class="container-full">
+      <HeroSection articles={heroArticles} />
+    </div>
+  </section>
+
+  {/* Market Pulse */}
+  <MarketPulseStrip />
+
+  {/* Latest News */}
+  {latestArticles.length > 0 && (
+    <section class="homepage-section">
+      <div class="container">
+        <LatestNewsFeed articles={latestArticles} title="Latest News" />
+      </div>
+    </section>
+  )}
+
+  {/* Topic: Markets */}
+  {marketsArticles.length > 0 && (
+    <section class="homepage-section homepage-section--alt">
+      <div class="container">
+        <TopicBlock title="Markets" slug="markets" articles={marketsArticles} />
+      </div>
+    </section>
+  )}
+
+  {/* Topic: Earnings */}
+  {earningsArticles.length > 0 && (
+    <section class="homepage-section">
+      <div class="container">
+        <TopicBlock title="Earnings" slug="earnings" articles={earningsArticles} />
+      </div>
+    </section>
+  )}
+
+  {/* Topic: Technology */}
+  {techArticles.length > 0 && (
+    <section class="homepage-section homepage-section--alt">
+      <div class="container">
+        <TopicBlock title="Technology" slug="technology" articles={techArticles} />
+      </div>
+    </section>
+  )}
+
+  {/* Topic: Banking */}
+  {bankingArticles.length > 0 && (
+    <section class="homepage-section">
+      <div class="container">
+        <TopicBlock title="Banking & Finance" slug="banking" articles={bankingArticles} />
+      </div>
+    </section>
+  )}
+
+  {/* Trust Module */}
+  <section class="homepage-section homepage-section--trust">
+    <div class="container">
+      <TrustModule />
+    </div>
+  </section>
+
+  {/* Newsletter CTA */}
+  <section class="homepage-section homepage-section--cta">
+    <div class="container">
+      <NewsletterCTA />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .homepage-section {
+    padding: var(--space-12) 0;
+  }
+  .homepage-section--hero {
+    padding-top: var(--space-6);
+    padding-bottom: var(--space-4);
+  }
+  .homepage-section--alt {
+    background-color: var(--color-bg-alt);
+    padding: var(--space-12) 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .homepage-section--trust {
+    background: linear-gradient(
+      180deg,
+      var(--color-bg-alt) 0%,
+      var(--color-bg) 100%
+    );
+    padding: var(--space-16) 0;
+  }
+  .homepage-section--cta {
+    padding: var(--space-12) 0 var(--space-16);
+  }
+  @media (max-width: 768px) {
+    .homepage-section {
+      padding: var(--space-8) 0;
+    }
+    .homepage-section--trust {
+      padding: var(--space-10) 0;
+    }
+    .homepage-section--cta {
+      padding: var(--space-8) 0 var(--space-12);
+    }
+  }
+</style>

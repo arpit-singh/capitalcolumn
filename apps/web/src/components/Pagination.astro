@@ -1,0 +1,90 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string;
+}
+
+const { currentPage, totalPages, baseUrl } = Astro.props;
+
+function pageUrl(page: number): string {
+  if (page === 1) return baseUrl;
+  return `${baseUrl}${baseUrl.endsWith('/') ? '' : '/'}page/${page}`;
+}
+
+// Generate page numbers with ellipsis
+function getPageNumbers(current: number, total: number): (number | 'ellipsis')[] {
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  const pages: (number | 'ellipsis')[] = [1];
+
+  if (current > 3) {
+    pages.push('ellipsis');
+  }
+
+  const rangeStart = Math.max(2, current - 1);
+  const rangeEnd = Math.min(total - 1, current + 1);
+
+  for (let i = rangeStart; i <= rangeEnd; i++) {
+    pages.push(i);
+  }
+
+  if (current < total - 2) {
+    pages.push('ellipsis');
+  }
+
+  pages.push(total);
+  return pages;
+}
+
+const pages = getPageNumbers(currentPage, totalPages);
+const hasPrev = currentPage > 1;
+const hasNext = currentPage < totalPages;
+---
+
+<nav class="pagination" aria-label="Pagination">
+  <a
+    href={hasPrev ? pageUrl(currentPage - 1) : undefined}
+    class:list={['pagination-btn', 'pagination-prev', { 'pagination-btn--disabled': !hasPrev }]}
+    aria-disabled={!hasPrev ? 'true' : undefined}
+    aria-label="Previous page"
+  >
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+    <span>Previous</span>
+  </a>
+
+  <ol class="pagination-pages" role="list">
+    {pages.map((page, i) => (
+      <li class="pagination-page-item">
+        {page === 'ellipsis' ? (
+          <span class="pagination-ellipsis" aria-hidden="true">…</span>
+        ) : (
+          <a
+            href={page !== currentPage ? pageUrl(page) : undefined}
+            class:list={['pagination-page-link', { 'pagination-page-link--current': page === currentPage }]}
+            aria-current={page === currentPage ? 'page' : undefined}
+            aria-label={`Page ${page}`}
+          >
+            {page}
+          </a>
+        )}
+      </li>
+    ))}
+  </ol>
+
+  <a
+    href={hasNext ? pageUrl(currentPage + 1) : undefined}
+    class:list={['pagination-btn', 'pagination-next', { 'pagination-btn--disabled': !hasNext }]}
+    aria-disabled={!hasNext ? 'true' : undefined}
+    aria-label="Next page"
+  >
+    <span>Next</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="9 18 15 12 9 6"/>
+    </svg>
+  </a>
+</nav>

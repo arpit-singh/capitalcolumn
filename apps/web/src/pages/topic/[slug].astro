@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import {
+  getTags,
+  getTagBySlug,
+  getArticlesByTag,
+} from '../../lib/data';
+
+export function getStaticPaths() {
+  const tags = getTags();
+  return tags.map((tag) => ({
+    params: { slug: tag.slug },
+    props: { tag },
+  }));
+}
+
+const { tag } = Astro.props;
+const articles = getArticlesByTag(tag.slug);
+---
+
+<BaseLayout
+  title={`${tag.name} — Topic`}
+  description={`Articles and analysis related to ${tag.name}. Stay updated with the latest coverage on CapitalColumn.`}
+>
+  <div class="container">
+    <header class="topic-header">
+      <nav class="breadcrumb-simple" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">›</span>
+        <span>Topics</span>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">{tag.name}</span>
+      </nav>
+      <h1>{tag.name}</h1>
+      <p class="topic-header__count">{articles.length} article{articles.length !== 1 ? 's' : ''}</p>
+    </header>
+
+    {articles.length === 0 ? (
+      <div class="empty-state">
+        <p>No articles tagged with "{tag.name}" yet.</p>
+      </div>
+    ) : (
+      <section class="topic-grid">
+        {articles.map((article) => (
+          <ArticleCard article={article} showImage={false} />
+        ))}
+      </section>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .topic-header {
+    padding: var(--space-8) 0 var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-8);
+  }
+  .topic-header h1 {
+    font-size: var(--text-4xl);
+    margin: var(--space-3) 0 var(--space-1);
+  }
+  .topic-header__count {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+  .breadcrumb-simple {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    display: flex;
+    gap: var(--space-2);
+  }
+  .breadcrumb-simple a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+  .breadcrumb-simple a:hover {
+    color: var(--color-accent);
+  }
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--space-6);
+    padding-bottom: var(--space-12);
+  }
+  .empty-state {
+    text-align: center;
+    padding: var(--space-16) 0;
+    color: var(--color-text-muted);
+  }
+</style>

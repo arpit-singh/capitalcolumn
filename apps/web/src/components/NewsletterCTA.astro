@@ -1,0 +1,59 @@
+---
+---
+
+<section class="newsletter-cta" aria-labelledby="newsletter-heading">
+  <div class="newsletter-inner container">
+    <div class="newsletter-content">
+      <div class="newsletter-icon-wrap" aria-hidden="true">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+          <polyline points="22,6 12,13 2,6"/>
+        </svg>
+      </div>
+      <h2 id="newsletter-heading" class="newsletter-title">Stay Ahead of the Markets</h2>
+      <p class="newsletter-subtitle">Get AI-curated market intelligence delivered to your inbox. No noise, just the stories that move markets.</p>
+      <form class="newsletter-form" action="/api/subscribe" method="POST">
+        <div class="newsletter-input-group">
+          <label for="newsletter-email" class="sr-only">Email address</label>
+          <input
+            type="email"
+            id="newsletter-email"
+            name="email"
+            class="newsletter-input"
+            placeholder="your@email.com"
+            required
+            autocomplete="email"
+            aria-describedby="newsletter-note"
+          />
+          <button type="submit" class="newsletter-submit">
+            Subscribe
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </button>
+        </div>
+      </form>
+      <p id="newsletter-note" class="newsletter-note">Free · No spam · Unsubscribe anytime</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .newsletter-icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background-color: var(--color-accent-light);
+    border-radius: var(--radius-full);
+    color: var(--color-accent);
+    margin-bottom: var(--space-5);
+  }
+  .newsletter-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+</style>

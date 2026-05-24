@@ -1,0 +1,118 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { Article } from '../lib/types';
+import { siteConfig } from '../lib/config';
+import { formatDate, formatReadingTime } from '../lib/formatters';
+import ProvenanceBadge from '../components/ProvenanceBadge.astro';
+import '../styles/article.css';
+
+interface Props {
+  article: Article;
+}
+
+const { article } = Astro.props;
+
+// Derive SEO props from article
+const seoTitle = article.seo_title || article.title;
+const seoDescription = article.seo_description || article.dek;
+const ogImage = article.featured_image?.public_url || siteConfig.defaultOgImage;
+const canonicalUrl = article.canonical_url || undefined;
+
+// Provenance
+function getProvenanceType(a: Article): 'ai_assisted' | 'editor_reviewed' | 'source_verified' | 'updated' | 'corrected' {
+  if (a.correction_note) return 'corrected';
+  if (a.fact_check_status === 'source_verified') return 'source_verified';
+  if (a.is_editor_reviewed) return 'editor_reviewed';
+  return 'ai_assisted';
+}
+
+const provenanceType = getProvenanceType(article);
+
+// JSON-LD structured data
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  headline: article.title,
+  description: article.dek,
+  image: article.featured_image?.public_url,
+  datePublished: article.published_at,
+  dateModified: article.updated_at,
+  author: {
+    '@type': article.author.author_type === 'ai_assisted' ? 'Organization' : 'Person',
+    name: article.author.name,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: siteConfig.name,
+    url: siteConfig.url,
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `${siteConfig.url}/news/${article.slug}`,
+  },
+  articleSection: article.category.name,
+  wordCount: article.body_markdown.split(/\s+/).length,
+  isAccessibleForFree: true,
+};
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  ogImage={ogImage}
+  ogType="article"
+  canonicalUrl={canonicalUrl}
+  noindex={article.noindex}
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <meta property="article:published_time" content={article.published_at} />
+    <meta property="article:modified_time" content={article.updated_at} />
+    <meta property="article:section" content={article.category.name} />
+    {article.tags.map((tag) => (
+      <meta property="article:tag" content={tag.name} />
+    ))}
+  </Fragment>
+
+  <article class="article-page">
+    <div class="article-container">
+      {/* Breadcrumb */}
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="breadcrumb__separator" aria-hidden="true">›</span>
+        <a href={`/category/${article.category.slug}`}>{article.category.name}</a>
+        <span class="breadcrumb__separator" aria-hidden="true">›</span>
+        <span aria-current="page">{article.title.length > 50 ? article.title.slice(0, 50) + '…' : article.title}</span>
+      </nav>
+
+      {/* Article Header */}
+      <header class="article-header">
+        <div class="article-header__category">
+          <a href={`/category/${article.category.slug}`} class="category-badge">
+            {article.category.name}
+          </a>
+        </div>
+
+        <h1 class="article-header__title">{article.title}</h1>
+
+        {article.dek && (
+          <p class="article-header__dek">{article.dek}</p>
+        )}
+
+        <div class="provenance-row">
+          <span class="provenance-row__author">{article.author.name}</span>
+          <span class="provenance-row__divider" aria-hidden="true"></span>
+          <time datetime={article.published_at}>{formatDate(article.published_at)}</time>
+          <span class="provenance-row__divider" aria-hidden="true"></span>
+          <span>{formatReadingTime(article.reading_time_minutes)}</span>
+          <div class="provenance-row__badges">
+            <ProvenanceBadge type={provenanceType} />
+          </div>
+        </div>
+      </header>
+
+      {/* Page content slot */}
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

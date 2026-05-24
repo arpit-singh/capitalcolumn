@@ -1,0 +1,31 @@
+---
+import type { Article } from '../lib/types';
+import ArticleCard from './ArticleCard.astro';
+
+interface Props {
+  articles: Article[];
+  title?: string;
+}
+
+const { articles, title = 'Latest News' } = Astro.props;
+---
+
+<section class="latest-news-feed" aria-labelledby="latest-news-heading">
+  <div class="latest-news-header">
+    <h2 id="latest-news-heading" class="section-heading">{title}</h2>
+    <a href="/latest" class="section-view-all">
+      View All
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+  </div>
+  <div class="latest-news-list">
+    {articles.map((article, i) => (
+      <div class:list={['latest-news-item', { 'latest-news-item--first': i === 0 }]}>
+        <ArticleCard article={article} variant="horizontal" showImage={true} />
+      </div>
+    ))}
+  </div>
+</section>

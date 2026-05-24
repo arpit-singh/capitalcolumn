@@ -1,0 +1,82 @@
+---
+import type { Article } from '../lib/types';
+
+interface Props {
+  article: Article;
+}
+
+const { article } = Astro.props;
+
+const siteUrl = 'https://capitalcolumn.in';
+const articleUrl = `${siteUrl}/article/${article.slug}`;
+
+const newsArticleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  'headline': article.seo_title || article.title,
+  'description': article.seo_description || article.dek || article.summary,
+  'datePublished': article.published_at,
+  'dateModified': article.updated_at,
+  'author': {
+    '@type': article.author.author_type === 'editorial_team' ? 'Organization' : 'Person',
+    'name': article.author.name,
+    'url': `${siteUrl}/author/${article.author.slug}`,
+  },
+  'publisher': {
+    '@type': 'Organization',
+    'name': 'CapitalColumn',
+    'url': siteUrl,
+    'logo': {
+      '@type': 'ImageObject',
+      'url': `${siteUrl}/logo.png`,
+    },
+  },
+  'mainEntityOfPage': {
+    '@type': 'WebPage',
+    '@id': article.canonical_url || articleUrl,
+  },
+  ...(article.featured_image ? {
+    'image': {
+      '@type': 'ImageObject',
+      'url': article.featured_image.public_url,
+      'width': article.featured_image.width,
+      'height': article.featured_image.height,
+      'caption': article.featured_image.caption || article.featured_image.alt_text,
+    },
+  } : {}),
+  'articleSection': article.category.name,
+  'keywords': article.tags.map(t => t.name).join(', '),
+  'wordCount': Math.round(article.reading_time_minutes * 250),
+  ...(article.is_ai_generated ? {
+    'creativeWorkStatus': 'AI-Assisted',
+  } : {}),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  'itemListElement': [
+    {
+      '@type': 'ListItem',
+      'position': 1,
+      'name': 'Home',
+      'item': siteUrl,
+    },
+    {
+      '@type': 'ListItem',
+      'position': 2,
+      'name': article.category.name,
+      'item': `${siteUrl}/category/${article.category.slug}`,
+    },
+    {
+      '@type': 'ListItem',
+      'position': 3,
+      'name': article.title,
+    },
+  ],
+};
+
+const combinedSchema = [newsArticleSchema, breadcrumbSchema];
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(combinedSchema)} />

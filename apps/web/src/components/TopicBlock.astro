@@ -1,0 +1,43 @@
+---
+import type { Article } from '../lib/types';
+import ArticleCard from './ArticleCard.astro';
+import ArticleCardCompact from './ArticleCardCompact.astro';
+
+interface Props {
+  title: string;
+  slug: string;
+  articles: Article[];
+}
+
+const { title, slug, articles } = Astro.props;
+
+const featuredArticle = articles[0];
+const compactArticles = articles.slice(1, 4);
+---
+
+<section class="topic-block" aria-labelledby={`topic-${slug}`}>
+  <div class="topic-block-header">
+    <h2 id={`topic-${slug}`} class="section-heading">{title}</h2>
+    <a href={`/category/${slug}`} class="section-view-all">
+      More
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+  </div>
+  <div class="topic-block-grid">
+    {featuredArticle && (
+      <div class="topic-block-featured">
+        <ArticleCard article={featuredArticle} variant="default" showImage={true} />
+      </div>
+    )}
+    {compactArticles.length > 0 && (
+      <div class="topic-block-compact-list">
+        {compactArticles.map((article, i) => (
+          <ArticleCardCompact article={article} index={i} />
+        ))}
+      </div>
+    )}
+  </div>
+</section>

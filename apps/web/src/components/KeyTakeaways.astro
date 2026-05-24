@@ -1,0 +1,24 @@
+---
+interface Props {
+  takeaways: string[];
+  label?: string;
+}
+
+const { takeaways, label = 'Key Takeaways' } = Astro.props;
+---
+
+<aside class="key-takeaways" aria-label={label}>
+  <h3 class="key-takeaways-label">{label}</h3>
+  <ul class="key-takeaways-list" role="list">
+    {takeaways.map((item) => (
+      <li class="key-takeaways-item">
+        <span class="key-takeaways-check" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span>{item}</span>
+      </li>
+    ))}
+  </ul>
+</aside>

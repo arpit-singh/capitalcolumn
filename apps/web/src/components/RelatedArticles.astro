@@ -1,0 +1,20 @@
+---
+import type { Article } from '../lib/types';
+import ArticleCard from './ArticleCard.astro';
+
+interface Props {
+  articles: Article[];
+  title?: string;
+}
+
+const { articles, title = 'Related Coverage' } = Astro.props;
+---
+
+<section class="related-articles" aria-labelledby="related-heading">
+  <h2 id="related-heading" class="section-heading">{title}</h2>
+  <div class="related-articles-grid">
+    {articles.map((article) => (
+      <ArticleCard article={article} variant="default" showImage={false} />
+    ))}
+  </div>
+</section>

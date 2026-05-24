@@ -1,0 +1,54 @@
+---
+import type { Source } from '../lib/types';
+
+interface Props {
+  source: Source;
+}
+
+const { source } = Astro.props;
+
+const typeLabels: Record<Source['source_type'], string> = {
+  company_filing: 'Filing',
+  exchange_disclosure: 'Disclosure',
+  press_release: 'Press Release',
+  news_article: 'News',
+  official_statement: 'Statement',
+  market_data: 'Market Data',
+  social_media: 'Social',
+  other: 'Source',
+};
+
+const typeLabel = typeLabels[source.source_type] || 'Source';
+---
+
+<div class="source-card">
+  <div class="source-card-content">
+    <div class="source-card-header">
+      <span class:list={['source-card-type', `source-card-type--${source.source_type}`]}>
+        {typeLabel}
+      </span>
+      {source.is_primary_source && (
+        <span class="source-card-primary">Primary Source</span>
+      )}
+    </div>
+    <h4 class="source-card-name">
+      <a
+        href={source.source_url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="source-card-link"
+      >
+        {source.source_name}
+        <svg class="source-card-external-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+      </a>
+    </h4>
+    <p class="source-card-publisher">{source.publisher}</p>
+    {source.relevance_note && (
+      <p class="source-card-note">{source.relevance_note}</p>
+    )}
+  </div>
+</div>

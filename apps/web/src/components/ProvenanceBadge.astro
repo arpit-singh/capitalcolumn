@@ -1,0 +1,22 @@
+---
+interface Props {
+  type: 'ai_assisted' | 'editor_reviewed' | 'source_verified' | 'updated' | 'corrected';
+}
+
+const { type } = Astro.props;
+
+const config: Record<Props['type'], { icon: string; label: string }> = {
+  ai_assisted: { icon: '🤖', label: 'AI-Assisted' },
+  editor_reviewed: { icon: '✓', label: 'Editor Reviewed' },
+  source_verified: { icon: '🔗', label: 'Source Verified' },
+  updated: { icon: '↻', label: 'Updated' },
+  corrected: { icon: '⚠', label: 'Corrected' },
+};
+
+const { icon, label } = config[type];
+---
+
+<span class:list={['provenance-badge', `provenance-badge--${type}`]} title={label}>
+  <span class="provenance-badge-icon" aria-hidden="true">{icon}</span>
+  <span class="provenance-badge-label">{label}</span>
+</span>
