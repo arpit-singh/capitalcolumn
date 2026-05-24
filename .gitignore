@@ -1,0 +1,5 @@
+# Ignore auto-generated folders
+apps/web/node_modules/
+apps/web/dist/
+apps/web/.astro/
+*.env
