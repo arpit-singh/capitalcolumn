@@ -5,7 +5,8 @@ export async function GET() {
   const now = Date.now();
   const fortyEightHoursAgo = now - 48 * 60 * 60 * 1000;
 
-  const recentArticles = getArticles().filter(
+  const allArticles = await getArticles();
+  const recentArticles = allArticles.filter(
     (a) => new Date(a.published_at).getTime() >= fortyEightHoursAgo
   );
 

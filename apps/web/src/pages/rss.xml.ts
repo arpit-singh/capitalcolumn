@@ -2,7 +2,7 @@ import { getArticles } from '../lib/data';
 import { siteConfig } from '../lib/config';
 
 export async function GET() {
-  const articles = getArticles().slice(0, 50);
+  const articles = (await getArticles({ limit: 50 })).slice(0, 50);
 
   const items = articles.map((article) => `
     <item>

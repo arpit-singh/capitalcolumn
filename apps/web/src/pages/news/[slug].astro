@@ -8,27 +8,21 @@ import NewsletterCTA from '../../components/NewsletterCTA.astro';
 import { renderMarkdown } from '../../lib/markdown';
 import { formatDate } from '../../lib/formatters';
 import {
-  getAllArticleSlugs,
   getArticleBySlug,
   getRelatedArticles,
 } from '../../lib/data';
 
-export function getStaticPaths() {
-  const slugs = getAllArticleSlugs();
-  return slugs.map((slug) => ({
-    params: { slug },
-  }));
-}
+export const prerender = false;
 
 const { slug } = Astro.params;
-const article = getArticleBySlug(slug as string);
+const article = await getArticleBySlug(slug as string);
 
 if (!article) {
   return Astro.redirect('/404');
 }
 
 const bodyHtml = renderMarkdown(article.body_markdown);
-const relatedArticles = getRelatedArticles(article, 3);
+const relatedArticles = await getRelatedArticles(article, 3);
 ---
 
 <ArticleLayout article={article}>

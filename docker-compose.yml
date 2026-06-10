@@ -13,6 +13,11 @@ services:
       - app_network
     ports:
       - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U capitalcolumn_user -d capitalcolumn"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   api:
     build:
@@ -23,11 +28,36 @@ services:
     env_file:
       - ./services/api/.env
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - app_network
     ports:
-      - "127.0.0.1:8000:8000"
+      - "0.0.0.0:8000:8000"
+    volumes:
+      - pipeline_data:/app/pipeline_data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  admin:
+    build:
+      context: ./apps/admin
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ""
+    container_name: capitalcolumn_admin
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - app_network
+    ports:
+      - "0.0.0.0:8080:80"
 
   pgadmin:
     image: dpage/pgadmin4
@@ -41,10 +71,12 @@ services:
     networks:
       - app_network
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
 volumes:
   postgres_data:
+  pipeline_data:
 
 networks:
   app_network:

@@ -1,7 +1,36 @@
+# Core
 fastapi
 uvicorn[standard]
-psycopg[binary]
-sqlalchemy
-alembic
-python-dotenv
 pydantic-settings
+
+# Database
+psycopg[binary]
+sqlalchemy[asyncio]
+asyncpg
+alembic
+
+# Auth & Security
+python-jose[cryptography]
+bcrypt
+python-multipart
+
+# Media / R2
+boto3
+httpx
+
+# Feeds
+feedgen
+feedparser
+python-dateutil
+
+# Utilities
+python-dotenv
+python-slugify
+
+# Pipeline — LLM
+openai
+google-genai
+
+# Pipeline — Image Generation
+replicate
+Pillow

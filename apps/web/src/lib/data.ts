@@ -574,99 +574,107 @@ export const articles: Article[] = [
 ];
 
 // ═══════════════════════════════════════════════════════════
-// Data Access Functions
+// Live API Access Functions
 // ═══════════════════════════════════════════════════════════
 
-/** Get all published articles sorted by date */
-export function getArticles(): Article[] {
-  return articles
-    .filter((a) => a.status === 'published')
-    .sort((a, b) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
+// Fallback to the production API if no env var is set
+const API_URL = import.meta.env.API_BASE_URL || process.env.API_BASE_URL || 'https://api.capitalcolumn.in';
+
+/**
+ * Generic fetch wrapper for API calls
+ */
+async function fetchAPI(endpoint: string, params: Record<string, string> = {}) {
+  try {
+    const url = new URL(`${API_URL}${endpoint}`);
+    Object.entries(params).forEach(([k, v]) => {
+      if (v) url.searchParams.append(k, v);
+    });
+    
+    const res = await fetch(url.toString(), {
+      // Small timeout to prevent hanging forever
+      signal: AbortSignal.timeout(5000),
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (!res.ok) {
+      if (res.status === 404) return null;
+      console.error(`API Error: ${res.status} ${res.statusText} fetching ${endpoint}`);
+      return null;
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error(`Failed to fetch ${endpoint}:`, error);
+    return null;
+  }
+}
+
+/** Get published articles with optional filters */
+export async function getArticles(filters: { limit?: number, category?: string, tag?: string, ticker?: string } = {}): Promise<Article[]> {
+  const params: Record<string, string> = { limit: (filters.limit || 50).toString() };
+  if (filters.category) params.category = filters.category;
+  if (filters.tag) params.tag = filters.tag;
+  if (filters.ticker) params.ticker = filters.ticker;
+
+  const data = await fetchAPI('/public/articles', params);
+  return data?.items || [];
 }
 
 /** Get a single article by slug */
-export function getArticleBySlug(slug: string): Article | undefined {
-  return articles.find((a) => a.slug === slug && a.status === 'published');
+export async function getArticleBySlug(slug: string): Promise<Article | undefined> {
+  const data = await fetchAPI(`/public/articles/${slug}`);
+  return data || undefined;
 }
 
-/** Get all article slugs for static paths */
-export function getAllArticleSlugs(): string[] {
-  return articles.filter((a) => a.status === 'published').map((a) => a.slug);
-}
-
-/** Get articles by category slug */
-export function getArticlesByCategory(categorySlug: string): Article[] {
-  return getArticles().filter((a) => a.category.slug === categorySlug);
-}
-
-/** Get articles by tag slug */
-export function getArticlesByTag(tagSlug: string): Article[] {
-  return getArticles().filter((a) => a.tags.some((t) => t.slug === tagSlug));
-}
-
-/** Get articles mentioning a ticker */
-export function getArticlesByTicker(ticker: string): Article[] {
-  return getArticles().filter((a) =>
-    a.tickers.some((t) => t.ticker.toLowerCase() === ticker.toLowerCase())
-  );
-}
-
-/** Get all categories */
-export function getCategories(): Category[] {
-  return categories.filter((c) => c.is_active).sort((a, b) => a.sort_order - b.sort_order);
+/** Get all active categories */
+export async function getCategories(): Promise<Category[]> {
+  const data = await fetchAPI('/public/categories');
+  return data || [];
 }
 
 /** Get a category by slug */
-export function getCategoryBySlug(slug: string): Category | undefined {
-  return categories.find((c) => c.slug === slug);
+export async function getCategoryBySlug(slug: string): Promise<Category | undefined> {
+  const data = await fetchAPI(`/public/categories/${slug}`);
+  return data || undefined;
 }
 
 /** Get all tags */
-export function getTags(): Tag[] {
-  return tags;
+export async function getTags(): Promise<Tag[]> {
+  const data = await fetchAPI('/public/tags');
+  return data || [];
 }
 
 /** Get a tag by slug */
-export function getTagBySlug(slug: string): Tag | undefined {
+export async function getTagBySlug(slug: string): Promise<Tag | undefined> {
+  const tags = await getTags();
   return tags.find((t) => t.slug === slug);
 }
 
-/** Get all companies */
-export function getCompanies(): CompanyTicker[] {
-  return companies;
-}
-
-/** Get a company by ticker */
-export function getCompanyByTicker(ticker: string): CompanyTicker | undefined {
-  return companies.find((c) => c.ticker.toLowerCase() === ticker.toLowerCase());
-}
-
-/** Get related articles (same category, excluding current) */
-export function getRelatedArticles(article: Article, max: number = 3): Article[] {
-  return getArticles()
-    .filter((a) => a.id !== article.id && a.category.slug === article.category.slug)
-    .slice(0, max);
-}
-
-/** Search articles by query string (client-side MVP) */
-export function searchArticles(query: string, categorySlug?: string): Article[] {
-  const q = query.toLowerCase().trim();
-  let results = getArticles();
-
-  if (categorySlug) {
-    results = results.filter((a) => a.category.slug === categorySlug);
+/** Get company/ticker page data */
+export async function getCompanyData(ticker: string): Promise<{ company: CompanyTicker, articles: Article[] } | undefined> {
+  const data = await fetchAPI(`/public/tickers/${ticker}`);
+  if (data) {
+    return {
+      company: data.company,
+      articles: data.articles?.items || []
+    };
   }
+  return undefined;
+}
 
-  if (q) {
-    results = results.filter(
-      (a) =>
-        a.title.toLowerCase().includes(q) ||
-        a.dek.toLowerCase().includes(q) ||
-        a.summary.toLowerCase().includes(q) ||
-        a.tags.some((t) => t.name.toLowerCase().includes(q)) ||
-        a.tickers.some((t) => t.ticker.toLowerCase().includes(q) || t.name.toLowerCase().includes(q))
-    );
-  }
+/** Get related articles */
+export async function getRelatedArticles(article: Article, max: number = 3): Promise<Article[]> {
+  if (!article.category?.slug) return [];
+  const articles = await getArticles({ category: article.category.slug, limit: max + 1 });
+  return articles.filter(a => a.id !== article.id).slice(0, max);
+}
 
-  return results;
+/** Search articles */
+export async function searchArticles(query: string, categorySlug?: string): Promise<Article[]> {
+  const params: Record<string, string> = { search: query, limit: '20' };
+  if (categorySlug) params.category = categorySlug;
+  const data = await fetchAPI('/public/articles', params);
+  return data?.items || [];
 }

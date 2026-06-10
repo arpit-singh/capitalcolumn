@@ -1,0 +1,21 @@
+# Core
+httpx
+feedparser
+beautifulsoup4
+lxml
+
+# LLM
+openai
+google-genai
+
+# Image Generation
+replicate
+Pillow
+
+# SEO / Interlinking
+scikit-learn
+
+# CLI & Utilities
+python-dotenv
+click
+rich

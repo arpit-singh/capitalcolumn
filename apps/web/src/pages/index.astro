@@ -9,17 +9,16 @@ import NewsletterCTA from '../components/NewsletterCTA.astro';
 import { siteConfig } from '../lib/config';
 import {
   getArticles,
-  getArticlesByCategory,
 } from '../lib/data';
 
-const allArticles = getArticles();
+const allArticles = await getArticles();
 const heroArticles = allArticles.slice(0, 5);
 const latestArticles = allArticles.slice(5, 11);
 
-const marketsArticles = getArticlesByCategory('markets');
-const techArticles = getArticlesByCategory('technology');
-const earningsArticles = getArticlesByCategory('earnings');
-const bankingArticles = getArticlesByCategory('banking');
+const marketsArticles = await getArticles({ category: 'markets' });
+const techArticles = await getArticles({ category: 'technology' });
+const earningsArticles = await getArticles({ category: 'earnings' });
+const bankingArticles = await getArticles({ category: 'banking' });
 ---
 
 <BaseLayout

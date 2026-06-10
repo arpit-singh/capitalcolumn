@@ -3,21 +3,19 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import TickerChip from '../../components/TickerChip.astro';
 import {
-  getCompanies,
-  getCompanyByTicker,
-  getArticlesByTicker,
+  getCompanyData,
 } from '../../lib/data';
 
-export function getStaticPaths() {
-  const companies = getCompanies();
-  return companies.map((co) => ({
-    params: { ticker: co.ticker },
-    props: { company: co },
-  }));
+export const prerender = false;
+
+const { ticker } = Astro.params;
+const companyData = await getCompanyData(ticker as string);
+
+if (!companyData) {
+  return Astro.redirect('/404');
 }
 
-const { company } = Astro.props;
-const articles = getArticlesByTicker(company.ticker);
+const { company, articles } = companyData;
 ---
 
 <BaseLayout

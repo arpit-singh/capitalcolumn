@@ -3,8 +3,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import { getArticles, getCategories } from '../lib/data';
 
-const allArticles = getArticles();
-const categories = getCategories();
+const allArticles = await getArticles();
+const categories = await getCategories();
 ---
 
 <BaseLayout

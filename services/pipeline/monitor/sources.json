@@ -1,0 +1,31 @@
+{
+  "rss_feeds": [
+    {
+      "name": "Moneycontrol - Latest News",
+      "url": "https://www.moneycontrol.com/rss/latestnews.xml",
+      "category": "markets"
+    },
+    {
+      "name": "Economic Times - Markets",
+      "url": "https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms",
+      "category": "markets"
+    },
+    {
+      "name": "LiveMint - Markets",
+      "url": "https://www.livemint.com/rss/markets",
+      "category": "markets"
+    },
+    {
+      "name": "Economic Times - Tech",
+      "url": "https://economictimes.indiatimes.com/tech/rssfeeds/13357270.cms",
+      "category": "technology"
+    },
+    {
+      "name": "Moneycontrol - IPO",
+      "url": "https://www.moneycontrol.com/rss/ipo.xml",
+      "category": "ipos"
+    }
+  ],
+  "sitemaps": [],
+  "check_interval_minutes": 30
+}

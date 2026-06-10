@@ -3,20 +3,20 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import ArticleCardCompact from '../../components/ArticleCardCompact.astro';
 import {
-  getCategories,
-  getArticlesByCategory,
+  getCategoryBySlug,
+  getArticles,
 } from '../../lib/data';
 
-export function getStaticPaths() {
-  const categories = getCategories();
-  return categories.map((cat) => ({
-    params: { slug: cat.slug },
-    props: { category: cat },
-  }));
+export const prerender = false;
+
+const { slug } = Astro.params;
+const category = await getCategoryBySlug(slug as string);
+
+if (!category) {
+  return Astro.redirect('/404');
 }
 
-const { category } = Astro.props;
-const articles = getArticlesByCategory(category.slug);
+const articles = await getArticles({ category: category.slug });
 const featuredArticle = articles[0];
 const gridArticles = articles.slice(1, 4);
 const remainingArticles = articles.slice(4);

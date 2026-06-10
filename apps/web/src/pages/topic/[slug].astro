@@ -2,21 +2,20 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import {
-  getTags,
   getTagBySlug,
-  getArticlesByTag,
+  getArticles,
 } from '../../lib/data';
 
-export function getStaticPaths() {
-  const tags = getTags();
-  return tags.map((tag) => ({
-    params: { slug: tag.slug },
-    props: { tag },
-  }));
+export const prerender = false;
+
+const { slug } = Astro.params;
+const tag = await getTagBySlug(slug as string);
+
+if (!tag) {
+  return Astro.redirect('/404');
 }
 
-const { tag } = Astro.props;
-const articles = getArticlesByTag(tag.slug);
+const articles = await getArticles({ tag: tag.slug });
 ---
 
 <BaseLayout
