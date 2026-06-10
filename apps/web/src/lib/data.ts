@@ -578,7 +578,7 @@ export const articles: Article[] = [
 // ═══════════════════════════════════════════════════════════
 
 // Fallback to the production API if no env var is set
-const API_URL = import.meta.env.API_BASE_URL || process.env.API_BASE_URL || 'https://api.capitalcolumn.in';
+const API_URL = import.meta.env.API_BASE_URL || process.env.API_BASE_URL || 'http://api.capitalcolumn.in';
 
 /**
  * Generic fetch wrapper for API calls

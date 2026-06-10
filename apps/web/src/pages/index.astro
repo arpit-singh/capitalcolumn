@@ -11,14 +11,22 @@ import {
   getArticles,
 } from '../lib/data';
 
-const allArticles = await getArticles();
+const [
+  allArticles,
+  marketsArticles,
+  techArticles,
+  earningsArticles,
+  bankingArticles
+] = await Promise.all([
+  getArticles(),
+  getArticles({ category: 'markets' }),
+  getArticles({ category: 'technology' }),
+  getArticles({ category: 'earnings' }),
+  getArticles({ category: 'banking' })
+]);
+
 const heroArticles = allArticles.slice(0, 5);
 const latestArticles = allArticles.slice(5, 11);
-
-const marketsArticles = await getArticles({ category: 'markets' });
-const techArticles = await getArticles({ category: 'technology' });
-const earningsArticles = await getArticles({ category: 'earnings' });
-const bankingArticles = await getArticles({ category: 'banking' });
 ---
 
 <BaseLayout
