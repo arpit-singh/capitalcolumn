@@ -4,7 +4,9 @@ import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
   output: 'server',
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    imageService: 'cloudflare'
+  }),
   site: 'https://capitalcolumn.in',
   integrations: [sitemap()],
   vite: {
