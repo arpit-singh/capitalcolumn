@@ -4,9 +4,19 @@ import ArticleCard from '../../components/ArticleCard.astro';
 import TickerChip from '../../components/TickerChip.astro';
 import {
   getCompanyData,
+  getArticles,
 } from '../../lib/data';
 
-export const prerender = false;
+export async function getStaticPaths() {
+  const articles = await getArticles({ limit: 100 });
+  const uniqueTickers = new Set<string>();
+  articles.forEach(article => {
+    article.tickers?.forEach(t => uniqueTickers.add(t.ticker.toLowerCase()));
+  });
+  return Array.from(uniqueTickers).map(ticker => ({
+    params: { ticker },
+  }));
+}
 
 const { ticker } = Astro.params;
 const companyData = await getCompanyData(ticker as string);

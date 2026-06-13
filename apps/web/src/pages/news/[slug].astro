@@ -10,9 +10,15 @@ import { formatDate } from '../../lib/formatters';
 import {
   getArticleBySlug,
   getRelatedArticles,
+  getArticles,
 } from '../../lib/data';
 
-export const prerender = false;
+export async function getStaticPaths() {
+  const articles = await getArticles({ limit: 100 }); // API max limit is 100
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+  }));
+}
 
 const { slug } = Astro.params;
 const article = await getArticleBySlug(slug as string);

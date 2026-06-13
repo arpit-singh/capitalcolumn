@@ -646,7 +646,7 @@ export async function getTags(): Promise<Tag[]> {
   return data || [];
 }
 
-/** Get a tag by slug */
+
 export async function getTagBySlug(slug: string): Promise<Tag | undefined> {
   const tags = await getTags();
   return tags.find((t) => t.slug === slug);

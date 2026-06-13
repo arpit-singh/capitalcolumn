@@ -92,7 +92,7 @@ const provenanceType = getProvenanceType(article);
         {article.reading_time_minutes} min read
       </span>
       <ProvenanceBadge type={provenanceType} />
-      {article.tickers.length > 0 && (
+      {article.tickers?.length > 0 && (
         <div class="article-card-tickers">
           {article.tickers.slice(0, 3).map((t) => (
             <TickerChip ticker={t.ticker} exchange={t.exchange} />

@@ -5,9 +5,15 @@ import ArticleCardCompact from '../../components/ArticleCardCompact.astro';
 import {
   getCategoryBySlug,
   getArticles,
+  getCategories,
 } from '../../lib/data';
 
-export const prerender = false;
+export async function getStaticPaths() {
+  const categories = await getCategories();
+  return categories.map((cat) => ({
+    params: { slug: cat.slug },
+  }));
+}
 
 const { slug } = Astro.params;
 const category = await getCategoryBySlug(slug as string);

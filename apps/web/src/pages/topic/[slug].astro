@@ -4,9 +4,15 @@ import ArticleCard from '../../components/ArticleCard.astro';
 import {
   getTagBySlug,
   getArticles,
+  getTags,
 } from '../../lib/data';
 
-export const prerender = false;
+export async function getStaticPaths() {
+  const tags = await getTags();
+  return tags.map((tag) => ({
+    params: { slug: tag.slug },
+  }));
+}
 
 const { slug } = Astro.params;
 const tag = await getTagBySlug(slug as string);

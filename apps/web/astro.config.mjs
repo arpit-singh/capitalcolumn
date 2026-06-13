@@ -1,12 +1,8 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import cloudflare from '@astrojs/cloudflare';
 
 export default defineConfig({
-  output: 'server',
-  adapter: cloudflare({
-    imageService: 'compile'
-  }),
+  output: 'static',
   site: 'https://capitalcolumn.in',
   integrations: [sitemap()],
   vite: {
